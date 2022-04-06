@@ -145,7 +145,6 @@ void PlayerPluginAudioProcessor::loadFileIntoTransport(const juce::File &audioFi
     currentAudioFileSource = nullptr;
 
     juce::AudioFormatReader *reader = formatManager.createReaderFor(audioFile);
-    currentlyLoadedFile = audioFile;
 
     if (reader != nullptr) {
         currentAudioFileSource = std::make_unique<juce::AudioFormatReaderSource>(reader, true);

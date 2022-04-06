@@ -16,7 +16,8 @@
 */
 class PlayerPluginAudioProcessorEditor
         : public juce::AudioProcessorEditor,
-        juce::ChangeListener{
+          public juce::ChangeListener,
+          public juce::FileDragAndDropTarget{
 public:
     PlayerPluginAudioProcessorEditor(PlayerPluginAudioProcessor &);
 
@@ -49,6 +50,9 @@ private:
     void stopButtonClicked();
 
     void loopButtonClicked();
+
+    bool isInterestedInFileDrag (const juce::StringArray& files) override;
+    void filesDropped (const juce::StringArray& files, int x, int y) override;
 
     juce::TextButton openButton1{"Open 1"};
     juce::TextButton playButton{"Play"};

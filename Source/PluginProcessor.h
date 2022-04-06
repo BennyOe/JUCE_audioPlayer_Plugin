@@ -54,7 +54,6 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     juce::AudioTransportSource transport;
     juce::AudioFormatManager formatManager;
-    juce::File currentlyLoadedFile;
     void loadFileIntoTransport(const juce::File& audioFile);
     std::unique_ptr<juce::AudioFormatReaderSource> currentAudioFileSource;
 

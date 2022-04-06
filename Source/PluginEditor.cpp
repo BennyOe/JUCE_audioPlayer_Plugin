@@ -49,7 +49,7 @@ PlayerPluginAudioProcessorEditor::~PlayerPluginAudioProcessorEditor() {
 //==============================================================================
 void PlayerPluginAudioProcessorEditor::paint(juce::Graphics &g) {
     g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-    juce::Rectangle<int> thumbnailBounds(10, 100, getWidth() - 20, getHeight() - 120);
+    juce::Rectangle<int> thumbnailBounds(10, 100, getWidth() - 20, getHeight() - 220);
 
     if (thumbnail.getNumChannels() == 0)
         paintIfNoFileLoaded(g, thumbnailBounds);
@@ -127,4 +127,28 @@ PlayerPluginAudioProcessorEditor::paintIfFileLoaded(juce::Graphics &g, const juc
                            0.0,                                    // start time
                            thumbnail.getTotalLength(),             // end time
                            1.0f);                                  // vertical zoom
+}
+
+bool PlayerPluginAudioProcessorEditor::isInterestedInFileDrag(const juce::StringArray &files) {
+    for (auto file: files) {
+        if (file.contains(".wav") || file.contains(".mp3") || file.contains(".aif")) {
+            DBG("true");
+            return true;
+        } else {
+            DBG("false");
+            return false;
+        }
+    }
+}
+
+void PlayerPluginAudioProcessorEditor::filesDropped(const juce::StringArray &files, int x, int y) {
+    DBG("in load");
+    for (auto path : files) {
+        if (isInterestedInFileDrag(files)) {
+            auto file = juce::File(path);
+            audioProcessor.loadFileIntoTransport(file);
+            playButton.setEnabled(true);
+            thumbnail.setSource(new juce::FileInputSource(file));
+        }
+    }
 }
